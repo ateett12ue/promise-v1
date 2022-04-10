@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { Widget, Avatar, Tag, Icon, Table, Button } from "web3uikit";
 
 const prelaunch: NextPage = () => {
   return (
@@ -9,7 +10,6 @@ const prelaunch: NextPage = () => {
         <title>Pre-Launch</title>
       </Head>
       <div className="h-full w-full flex overflow-hidden antialiased text-gray-800 bg-white">
-        
         {/* Sidebar starts here */}
         <nav className="flex-none flex flex-col items-center text-center bg-violet-900 text-gray-400 border-r h-screen">
           <div className="h-16 flex items-center w-full">
@@ -137,7 +137,9 @@ const prelaunch: NextPage = () => {
             aria-label="top bar"
             className="flex-none flex justify-between bg-white h-16"
           >
-            <div className="font-semibold text-lg text-gray-700 py-4 px-3">Promise DAO</div>
+            <div className="font-semibold text-lg text-gray-700 py-4 px-3">
+              Promise DAO
+            </div>
             <ul aria-label="top bar right" className="px-8 flex items-center">
               <li className="relative">
                 <input
@@ -222,9 +224,7 @@ const prelaunch: NextPage = () => {
               </li>
 
               <li className="h-10 w-10 ml-3">
-                <button
-                  className="h-full w-full rounded-full border focus:outline-none focus:shadow-outline"
-                >
+                <button className="h-full w-full rounded-full border focus:outline-none focus:shadow-outline">
                   <Image
                     alt=""
                     className="h-full w-full rounded-full mx-auto"
@@ -236,7 +236,6 @@ const prelaunch: NextPage = () => {
               </li>
             </ul>
           </nav>
-
           {/* Section header */}
           <header
             aria-label="page caption"
@@ -246,9 +245,48 @@ const prelaunch: NextPage = () => {
               Dashboard
             </h1>
           </header>
-
           {/* Other Content Comes here */}
-          <div className="font-bold">Further Content</div>
+          <div className="px-4 py-3">
+            <section style={{ display: "flex", gap: "20px" }}>
+              <Widget info="Promise DAO" title="DAO NAME" />
+              <Widget info="500,000" title="DAO TOKEN SUPPLY">
+              </Widget>
+              <Widget info="Promise (PRO)" title="COLLATERAL TOKEN"></Widget>
+              <Widget info="233,000" title="TREASURY BALANCE"></Widget>
+            </section>
+
+            <section style={{ display: "flex", gap: "20px" }} className="py-3">
+            {/* The tables for list of treasury managers, contributors, and funders */}
+            </section>
+
+            <section style={{ display: "flex", gap: "20px" }} className="py-3">
+              {/* Buttons for actions come here: Launch tokens, Fund contributors, manage roles */}
+              <Button
+                icon="plus"
+                id="test-button-primary-icon"
+                onClick={function noRefCheck() { }}
+                text="Launch Tokens"
+                theme="primary"
+                type="button"
+              />
+              <Button
+                icon="plus"
+                id="test-button-primary-icon"
+                onClick={function noRefCheck() { }}
+                text="Fund Contributors"
+                theme="secondary"
+                type="button"
+              />
+              <Button
+                icon="plus"
+                id="test-button-primary-icon"
+                onClick={function noRefCheck() { }}
+                text="Manage roles"
+                theme="secondary"
+                type="button"
+              />
+            </section>
+          </div>
         </div>
       </div>
     </div>
