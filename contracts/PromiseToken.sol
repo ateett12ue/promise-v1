@@ -25,28 +25,31 @@ contract PromiseToken is ERC20 {
         _vault = Vault(vaultAddress);
     }
 
-    function mint(address to, uint256 amount) public {
-        console.log("Depositing collateral to vault of amount", amount);
-        _vault.deposit(amount, _collateralToken);
+    function mint(address to, uint256 amount, address mintedBy, uint mintMethod) public {
+        console.log("Depositing collateral to vault of amount", amount, "by", _msgSender());
+
+        if (mintMethod == 0){
+            _vault.deposit(amount, _collateralToken, mintedBy);
+        }
         console.log("Minting promises");
         _mint(to, amount);
     }
 
-    function burnForCollateralToken(uint256 amount) public {
-        console.log("Burning promises for collateral of", _msgSender());
-        _burn(_msgSender(), amount);
+    function burnForCollateralToken(uint256 amount, address burnedBy) public {
+        console.log("Burning promises for collateral of", burnedBy);
+        _burn(burnedBy, amount);
         console.log("Withdrawing collateral", amount);
-        _vault.withdraw(amount, _collateralToken, _msgSender());
+        _vault.withdraw(amount, _collateralToken, burnedBy);
     }
 
-    function burnForDAOToken(uint256 amount) public {
-        console.log("Burning promises for dao tokens of", _msgSender());
+    function burnForDAOToken(uint256 amount, address burnedBy) public {
+        console.log("Burning promises for dao tokens of", burnedBy);
 
-        _burn(_msgSender(), amount);
+        _burn(burnedBy, amount);
         console.log("Withdrawing dao token to caller ", amount);
 
         uint daoTokenAmount = amount * _vault.depositsOf(_daoToken) / totalSupply();
-        _vault.withdraw(daoTokenAmount, _daoToken, _msgSender());
+        _vault.withdraw(daoTokenAmount, _daoToken, burnedBy);
         console.log("Withdrawing collateral to treasury", amount);
 
         _vault.withdraw(amount, _collateralToken, _treasury);
