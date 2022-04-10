@@ -6,8 +6,9 @@ import {CollateralToken} from "./CollateralToken.sol";
 import {Treasury} from "./Treasury.sol";
 import {Vault} from "./Vault.sol";
 import "hardhat/console.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
 
-contract Hub {
+contract Hub is Context {
     event DAOLaunch(uint daoId, address _daoToken, address _collateralToken, address _treasury, address _vault);
     event TokenUnlock(uint daoId, address unlockedBy);
     event TokenBurnedForCollateral(uint daoId, address burnedBy, uint256 amount);
@@ -44,52 +45,86 @@ contract Hub {
         return currDaoId;
     }
 
+    function fundContributor(uint daoId, address to, uint amount) external {
+        _promiseTokens[daoId].mint(to, amount, msg.sender, 0);
+        emit ContributorFunded(daoId, to, msg.sender, amount);
+    }
+
     function unlockDAOTokens(uint daoId) external {
         _daoTokens[daoId].unlock();
         emit TokenUnlock(daoId, msg.sender);
     }
 
     function burnTokenForCollateral(uint daoId, uint amount) external {
-        _promiseTokens[daoId].burnForCollateralToken(amount);
+        _promiseTokens[daoId].burnForCollateralToken(amount, msg.sender);
         emit TokenBurnedForCollateral(daoId, msg.sender, amount);
     }
 
     function burnTokenForDAOToken(uint daoId, uint amount) external {
-        _promiseTokens[daoId].burnForDAOToken(amount);
+        _promiseTokens[daoId].burnForDAOToken(amount, msg.sender);
         emit TokenBurnedForCollateral(daoId, msg.sender, amount);
     }
 
-    function fundContributor(uint daoId, address to, uint amount) external {
-        _promiseTokens[daoId].mint(to, amount);
-        emit ContributorFunded(daoId, to, msg.sender, amount);
-    }
 
     // ========= Views =========
-    function getCollateralTokenAddress(uint daoId) external view returns (address) {
+    function getCollateralTokenAddress(uint daoId) public view returns (address) {
         return address(_collateralTokens[daoId]);
     }
 
-    function getDaoTokenAddress(uint daoId) external view returns (address) {
+    function getDaoTokenAddress(uint daoId) public view returns (address) {
         return address(_daoTokens[daoId]);
     }
 
-    function isLockedDaoToken(uint daoId) external view returns (bool) {
+    function isLockedDaoToken(uint daoId) public view returns (bool) {
         return _daoTokens[daoId].locked();
     }
 
-    function getCollateralLockedAmount(uint daoId) external view returns (uint) {
+    function getCollateralLockedAmount(uint daoId) public view returns (uint) {
         return _promiseTokens[daoId].vault().depositsOf(address(_collateralTokens[daoId]));
     }
 
-    function getDaoTokenLockedAmount(uint daoId) external view returns (uint) {
+    function getDaoTokenAllocationAmountTowardsContributors(uint daoId) public view returns (uint) {
         return _promiseTokens[daoId].vault().depositsOf(address(_daoTokens[daoId]));
     }
 
-    function getDaoTokenTotalSupply(uint daoId) external view returns (uint) {
+    function getDaoTokenAllocationPercentageTowardsContributors(uint daoId) public view returns (uint) {
+        return getDaoTokenAllocationAmountTowardsContributors(daoId) * 100 / _daoTokens[daoId].totalSupply();
+    }
+
+    function getDaoTokenTotalSupply(uint daoId) public view returns (uint) {
         return _daoTokens[daoId].totalSupply();
     }
 
-    function getDaoTokenLockedPercentage(uint daoId) external view returns (uint) {
-        return _promiseTokens[daoId].vault().depositsOf(address(_daoTokens[daoId])) * 100 / _daoTokens[daoId].totalSupply();
+    function getPromiseTokensTotalSuppy(uint daoId) public view returns (uint) {
+        return _promiseTokens[daoId].totalSupply();
     }
+
+    function getPromiseTokenAddress(uint daoId) public view returns (address) {
+        return address(_promiseTokens[daoId]);
+    }
+
+    function getVaultAddress(uint daoId) public view returns (address) {
+        return address(_promiseTokens[daoId].vault());
+    }
+
+    function getTreasuryAddress(uint daoId) public view returns (address) {
+        return address(_treasuries[daoId]);
+    }
+
+    function getNumDAOs() public view returns (uint) {
+        return currDaoId;
+    }
+
+    function getPromiseTokensBalance(uint daoId, address contributor) public view returns (uint) {
+        return _promiseTokens[daoId].balanceOf(contributor);
+    }
+
+    function getDaoTokenBalance(uint daoId, address contributor) public view returns (uint) {
+        return _daoTokens[daoId].balanceOf(contributor);
+    }
+
+    function getContributorClaimToDaoTokens(uint daoId, address contributor) public view returns (uint) {
+        return getPromiseTokensBalance(daoId, contributor) * getDaoTokenAllocationAmountTowardsContributors(daoId) / getPromiseTokensTotalSuppy(daoId);
+    }  
+
 }

@@ -15,14 +15,14 @@ contract Vault is Ownable {
         return IERC20(token).balanceOf(address(this));
     }
 
-    function deposit(uint amount, address token) public virtual onlyOwner {
-        IERC20(token).transfer(address(this), amount);
+    function deposit(uint amount, address token, address depositor) public virtual onlyOwner {
+        IERC20(token).transferFrom(depositor, address(this), amount);
 
         emit Deposited(token, amount);
     }
 
     function withdraw(uint amount, address token, address to) public virtual onlyOwner {
-        IERC20(token).transferFrom(address(this), to, amount);
+        IERC20(token).transfer(to, amount);
 
         emit Withdrawn(token, amount);
     }

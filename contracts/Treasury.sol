@@ -17,8 +17,8 @@ contract Treasury is Pausable, Ownable {
     mapping(address => bool) private _funders;
 
     constructor() {
-        addManager(_msgSender());
-        addFunder(_msgSender());
+        _managers[_msgSender()] = true;
+        _funders[_msgSender()] = true;
     }
 
 

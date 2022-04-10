@@ -1,4 +1,5 @@
-require("@nomiclabs/hardhat-waffle");
+require("@nomiclabs/hardhat-ethers");
+require("./tasks/launch-dao.js");
 
 module.exports = {
   defaultNetwork: "hardhat",
