@@ -1,11 +1,26 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useMoralis } from "react-moralis";
 import Dashboard from "../../app/components/dashboard";
 import Navbar from "../../app/components/navbar";
 import Sidebar from "../../app/components/sidebar";
+import { useMoralisFunction } from "../../app/hooks/useMoralisFunction";
 
-const prelaunch: NextPage = () => {
+const Prelaunch: NextPage = () => {
+  const { runMoralisFunction } = useMoralisFunction();
+  const [member, setMember] = useState();
+  const { user, isAuthenticated } = useMoralis();
+  useEffect(() => {
+    if (isAuthenticated) {
+      runMoralisFunction("getMember", {}).then((res) => {
+        console.log(res);
+        setMember(res);
+      });
+    }
+  }, [isAuthenticated]);
+
   return (
     <div>
       <Head>
@@ -28,11 +43,11 @@ const prelaunch: NextPage = () => {
             </h1>
           </header>
           {/* Other Content Comes here */}
-          <Dashboard />
+          <Dashboard member={member} />
         </div>
       </div>
     </div>
   );
 };
 
-export default prelaunch;
+export default Prelaunch;

@@ -1,9 +1,16 @@
-import React from "react";
-import { Widget, Avatar, Tag, Icon, Table, Button } from "web3uikit";
+import React, { useState } from "react";
+import LaunchToken from "../launchToken";
+import FundContributor from "../fundContributor";
+import BurnToken from "../burnToken";
+import ClaimToken from "../claimToken";
+import Leaderboard from "../leaderboard";
+import { Widget, Avatar, Tag, Icon, Table, Button, Modal } from "web3uikit";
 
-type Props = {};
+type Props = {
+  member: any;
+};
 
-const Dashboard = (props: Props) => {
+const Dashboard = ({ member }: Props) => {
   return (
     <div className="px-4 py-3">
       <section style={{ display: "flex", gap: "20px" }}>
@@ -19,22 +26,8 @@ const Dashboard = (props: Props) => {
 
       <section style={{ display: "flex", gap: "20px" }} className="py-3">
         {/* Buttons for actions come here: Launch tokens, Fund contributors, manage roles */}
-        <Button
-          icon="plus"
-          id="test-button-primary-icon"
-          onClick={function noRefCheck() {}}
-          text="Launch Tokens"
-          theme="primary"
-          type="button"
-        />
-        <Button
-          icon="plus"
-          id="test-button-primary-icon"
-          onClick={function noRefCheck() {}}
-          text="Fund Contributors"
-          theme="secondary"
-          type="button"
-        />
+        <LaunchToken />
+        <FundContributor />
         <Button
           icon="plus"
           id="test-button-primary-icon"
@@ -43,7 +36,10 @@ const Dashboard = (props: Props) => {
           theme="secondary"
           type="button"
         />
+        <BurnToken />
+        <ClaimToken />
       </section>
+      <Leaderboard />
     </div>
   );
 };
