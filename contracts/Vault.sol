@@ -22,7 +22,7 @@ contract Vault is Ownable {
     }
 
     function withdraw(uint amount, address token, address to) public virtual onlyOwner {
-        IERC20(token).transferFrom(address(this), to, amount);
+        IERC20(token).transfer(to, amount);
 
         emit Withdrawn(token, amount);
     }

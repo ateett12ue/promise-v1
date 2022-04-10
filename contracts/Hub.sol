@@ -107,8 +107,24 @@ contract Hub is Context {
         return address(_promiseTokens[daoId].vault());
     }
 
+    function getTreasuryAddress(uint daoId) public view returns (address) {
+        return address(_treasuries[daoId]);
+    }
+
+    function getNumDAOs() public view returns (uint) {
+        return currDaoId;
+    }
+
+    function getPromiseTokensBalance(uint daoId, address contributor) public view returns (uint) {
+        return _promiseTokens[daoId].balanceOf(contributor);
+    }
+
+    function getDaoTokenBalance(uint daoId, address contributor) public view returns (uint) {
+        return _daoTokens[daoId].balanceOf(contributor);
+    }
 
     function getContributorClaimToDaoTokens(uint daoId, address contributor) public view returns (uint) {
-        return _promiseTokens[daoId].balanceOf(contributor) * getDaoTokenAllocationAmountTowardsContributors(daoId) / getPromiseTokensTotalSuppy(daoId);
-    }
+        return getPromiseTokensBalance(daoId, contributor) * getDaoTokenAllocationAmountTowardsContributors(daoId) / getPromiseTokensTotalSuppy(daoId);
+    }  
+
 }

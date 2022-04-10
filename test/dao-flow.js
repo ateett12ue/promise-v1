@@ -109,7 +109,7 @@ describe("Successful DAO Launch", function () {
     await burnPromiseTx.wait();
 
     expect(await hub.getCollateralLockedAmount(1)).to.equal(25);
-    expect(await hub.getPromiseTokensTotalSuppy(1)).to.equal(25);
+    expect(await hub.getPromiseTokensTotalSuppy(1)).to.equal("25");
     expect(
       await hub.getContributorClaimToDaoTokens(1, contributor1.address)
     ).to.equal(50);
