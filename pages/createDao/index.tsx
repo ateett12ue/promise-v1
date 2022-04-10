@@ -1,11 +1,13 @@
-import React from 'react'
-import TypeFormWidget from '../../app/components/typeFormWidget'
+import React from "react";
+import Navbar from "../../app/components/navbar";
+import TypeFormWidget from "../../app/components/typeFormWidget";
 const CreateDao = () => {
   return (
     <div>
-        <TypeFormWidget/>
+      <Navbar />
+      <TypeFormWidget />
     </div>
-  )
-}
+  );
+};
 
-export default CreateDao
+export default CreateDao;

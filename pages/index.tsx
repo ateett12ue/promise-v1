@@ -1,8 +1,8 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import Link from 'next/link'
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import Link from "next/link";
 const Home: NextPage = () => {
   return (
     <div className={styles.container}>
@@ -14,13 +14,16 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <div className={styles.grid}>
-          <Link href='/createDao'>
-            <div className={styles.card} style={{background: '#0000FF', color: '#fff'}}>
+          <Link href="/createDao" passHref>
+            <div
+              className={styles.card}
+              style={{ background: "#0000FF", color: "#fff" }}
+            >
               <h2>Create Dao</h2>
               <p>Create your first dao with us</p>
             </div>
           </Link>
-          <Link href={'/login'}>
+          <Link href={"/dashboard"} passHref>
             <div className={styles.card}>
               <h2>Login To Dashboard</h2>
               <p>Admins Dashboards</p>
@@ -35,14 +38,14 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
