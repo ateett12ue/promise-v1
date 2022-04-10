@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-const token = 'tfp_HMrdTRKvNCgaYcwsBhWv5omzuaJp5m9Xu1RRz2tZk4b5_3pf1RNNWSv5Nue';
+const token = 'tfp_GgDRDfrU8YBTq6t8CuxYwGEpBXRLT4gcqt4SgFrwVyBZ_h1JeE6cjRLaK';
 
 
 // const getResponse = async (req:any) => {
